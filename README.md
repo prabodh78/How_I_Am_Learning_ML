@@ -1,7 +1,7 @@
 # How_I_Am_Learning_ML
 
-## 1. Problem Statement: Train Face Detection Model.
-Major part in this problem statement is model selection and approch.
+## 1. Problem Statement: Train a digit classifier.
+Major part in this problem statement is model selection and approach.
 As you know these are basic steps of model training.
 
 <sub>
@@ -10,3 +10,5 @@ As you know these are basic steps of model training.
   Step 3: Train Model 
   Step 4: Test Model
 </sub>
+
+Please refer folder -> "Train_Classifier", here we have trained and evaluate classifier with different models.
