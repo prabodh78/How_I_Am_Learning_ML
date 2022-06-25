@@ -22,3 +22,15 @@ Learnings:
    5. Convolution Neural Network
 2. Model testing has big role in training pipeline, as we are not sure 'How model will perform on realtime world'. 
    1. Cross Validation , Confusion Matrix and calculating loss helps here.
+
+## 2. Problem Statement: Train a Face Detector.
+Face Detection is not that simple as to train a digit classifier. In digit classifier eventually, 
+we are giving positive and negative samples but here will only have to train on positive samples. Labeling has major 
+role in Face Detection, face has to label properly for that there is open source tool LabelImage.
+In case of object detection, theory says that NN outperforms all other ML architectures. 
+
+Learnings: 
+1. I have trained ->
+   1. HOG+SVM - Classifier 
+ 
+   
