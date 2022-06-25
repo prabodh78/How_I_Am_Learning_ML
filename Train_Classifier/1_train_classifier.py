@@ -11,13 +11,16 @@ from sklearn.metrics import confusion_matrix
 import matplotlib.pyplot as plt
 from tensorflow.python.keras.optimizer_v2.adam import Adam
 from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Dense, Flatten
+from tensorflow.keras.layers import Dense, Conv2D, Dropout, Flatten, MaxPooling2D
 from sklearn.preprocessing import OneHotEncoder
 from sklearn.datasets import load_iris
 from sklearn.model_selection import train_test_split
+from sklearn import svm
 from tensorflow.keras.datasets import mnist
 import tensorflow as tf
+from tensorflow import keras
 import numpy as np
+import random
 #
 # gpus = tf.config.experimental.list_physical_devices('GPU')
 # print(gpus)
@@ -26,6 +29,7 @@ import numpy as np
 # tf.config.get_visible_devices()
 
 dataset = datasets.load_digits()
+
 
 image_features = dataset.images.reshape((len(dataset.images), -1))
 image_targets = dataset.target
@@ -36,10 +40,10 @@ k_fold = model_selection.KFold(n_splits=10)
 
 
 def compute_accuracy(best_model, cross_validate=False):
-    print("[Info] Accuracy Score: ", best_model.score(feature_train, target_train))
+    print("[Info] {} | Accuracy Score: ".format(best_model), best_model.score(feature_train, target_train))
     best_model.fit(feature_test, target_test)
     y_pred = best_model.predict(feature_test)
-    print("[Info] Confusion Matrix: ",  confusion_matrix(target_test, y_pred))
+    print("[Info] {} | Confusion Matrix: \n".format(best_model),  confusion_matrix(target_test, y_pred))
     if cross_validate:
         predictions = model_selection.cross_val_predict(best_model, feature_test, target_test, cv=k_fold)
         print("Accuracy of the tuned model: {} ".format(best_model), accuracy_score(target_test, predictions))
@@ -53,6 +57,12 @@ def compute_accuracy(best_model, cross_validate=False):
         ax.set_xlabel("Measured")
         ax.set_ylabel("Predicted")
         plt.show()
+
+    img = dataset.images[random.randint(0, 9)]
+    print("[Info] Test Image Shape: ", img.shape)
+    plt.imshow(img, cmap=plt.cm.gray_r, interpolation='nearest')
+    print("[Info] {} | Prediction for test image is : ".format(best_model), best_model.predict(img.reshape(1, -1)))
+    plt.show()
 
 
 def predict_digit_mnist(model, img_path):
@@ -102,6 +112,72 @@ def train_logistic_regression():
     compute_accuracy(pipe)
 
 
+def train_svm():
+    classifier = svm.SVC(gamma=0.005)
+    # Standardization, or mean removal and variance scaling
+    pipe = make_pipeline(StandardScaler(), classifier)
+    pipe.fit(feature_train, target_train)  # apply scaling on training data
+    # Pipeline(steps=[('standardscaler', StandardScaler()),
+    #                 ('logisticregression', LogisticRegression())])
+    compute_accuracy(pipe)
+    # let's test on the last few images
+
+
+def train_cnn():
+    num_classes = 10
+    # Hyperparameters
+    batch_size = 128
+    epochs = 50
+    learning_rate = 0.5
+    # the data, split between train and test sets
+    x_train, y_train, x_test, y_test = feature_train, target_train, feature_test, target_test
+    print(x_train.shape, y_train.shape)
+
+    x_train = x_train.reshape(x_train.shape[0], 8, 8, 1)
+    x_test = x_test.reshape(x_test.shape[0], 8, 8, 1)
+    input_shape = (8, 8, 1)
+
+    # convert class vectors to binary class matrices
+    y_train = keras.utils.to_categorical(y_train, num_classes)
+    y_test = keras.utils.to_categorical(y_test, num_classes)
+
+    x_train = x_train.astype('float32')
+    x_test = x_test.astype('float32')
+    # After removing this normalization , I got 0.988 accuracy.
+    # x_train /= 255
+    # x_test /= 255
+    print('x_train shape:', x_train.shape)
+    print(x_train.shape[0], 'train samples')
+    print(x_test.shape[0], 'test samples')
+
+    model = Sequential()
+    model.add(Conv2D(32, kernel_size=(3, 3), activation='relu', input_shape=input_shape))
+    model.add(Conv2D(64, (3, 3), activation='relu'))
+    model.add(MaxPooling2D(pool_size=(2, 2)))
+    model.add(Dropout(0.25))    # To avoid Overfitting
+    model.add(Flatten())
+    model.add(Dense(256, activation='relu'))
+    model.add(Dropout(0.5))     # To avoid Overfitting
+    model.add(Dense(num_classes, activation='softmax'))
+
+    model.compile(loss=keras.losses.categorical_crossentropy,
+                  optimizer=keras.optimizers.Adadelta(learning_rate=learning_rate),
+                  metrics=['accuracy'])
+
+    hist = model.fit(x_train, y_train, batch_size=batch_size, epochs=epochs, verbose=1,
+                     validation_data=(x_test, y_test))
+    print(hist)
+    results = model.evaluate(x_test, y_test)
+    print("[Info] CNN | Loss and Accuracy on the test dataset : ")
+    print(results)
+    img = dataset.images[random.randint(0, 9)]
+    print("[Info] Test Image Shape: ", img.shape)
+    plt.imshow(img, cmap=plt.cm.gray_r, interpolation='nearest')
+    pred = model.predict(img.reshape(1, -1))
+    print("[Info] DNN | Prediction for test image: ", np.argmax(pred[0]))
+    plt.show()
+
+
 def train_deep_neural_network():
     features = dataset.data
     y = dataset.target.reshape(-1, 1)
@@ -138,10 +214,16 @@ def train_deep_neural_network():
     # predicted = model.predict(test_features)
     # print('[Info] Prediction of : Actual value: ', predicted.shape, test_targets[0])
     results = model.evaluate(test_features, test_targets)
-    print("[Info] Loss and Accuracy on the test dataset : ")
+    print("[Info] DNN | Loss and Accuracy on the test dataset : ")
     print(results)
     # print(confusion_matrix(target_train, predicted))
     # model.save('saved_model/dnn_digit_classifier')
+    img = dataset.images[random.randint(0, 9)]
+    print("[Info] Test Image Shape: ", img.shape)
+    plt.imshow(img, cmap=plt.cm.gray_r, interpolation='nearest')
+    pred = model.predict(img.reshape(1, -1))
+    print("[Info] DNN | Prediction for test image: ", np.argmax(pred[0]))
+    plt.show()
 
 
 def train_dnn_mnist():
@@ -165,7 +247,7 @@ def train_dnn_mnist():
     model.fit(x_train, y_train, epochs=epochs)
     model.save('save_model/dnn_mnist_v2')
     results = model.evaluate(x_test, y_test)
-    print("[Info] Loss and Accuracy on the test dataset : ")
+    print("[Info] DNN | Loss and Accuracy on the test dataset : ")
     print(results)
     # how to use model
     pred = model.predict(x_test[0].reshape(1, 28, 28, 1))
@@ -218,8 +300,11 @@ def show_dataset():
     plt.matshow(dataset.images[0])
     plt.show()
 
+
 train_logistic_regression()
 train_random_forest_model()
 train_deep_neural_network_iris()
 train_deep_neural_network()
 train_dnn_mnist()
+train_svm()
+train_cnn()

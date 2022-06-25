@@ -11,4 +11,14 @@ As you know these are basic steps of model training.
   Step 4: Test Model
 </sub>
 
-Please refer folder -> "Train_Classifier", here we have trained and evaluate classifier with different models.
+##### Please refer folder -> "Train_Classifier", here we have trained and evaluate classifier with different models.
+
+Learnings: 
+1. I have trained digit dataset with different classifier like ->
+   1. Logistic Regression 
+   2. Random Forest 
+   3. SVM 
+   4. Deep Neural Network 
+   5. Convolution Neural Network
+2. Model testing has big role in training pipeline, as we are not sure 'How model will perform on realtime world'. 
+   1. Cross Validation , Confusion Matrix and calculating loss helps here.
