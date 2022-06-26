@@ -11,7 +11,7 @@ As you know these are basic steps of model training.
   Step 4: Test Model
 </sub>
 
-##### Please refer folder -> "Train_Classifier", here we have trained and evaluate classifier with different models.
+##### Please refer folder -> "Train_Classifier", here i have trained and evaluate classifier with different models.
 
 Learnings: 
 1. I have trained digit dataset with different classifier like ->
@@ -31,13 +31,6 @@ In case of object detection, theory says that NN outperforms all other ML archit
 
 Learnings: 
 1. I have trained ->
-   1. HOG+SVM - Classifier
-   2. HOG+SVM - Dlib Detector
-
-2. Explored ->
-   1. ImgLab - ImgLab is annotation tool (labels are annotated with this tool while HOG+SVM(Dlib) training). 
-   2. MTCNN - Detector(https://github.com/ipazc/mtcnn)
-   3. Violo-Jones(Haar-cascade Detection in OpenCV) - Face Detector
- Reference:
-   https://towardsdatascience.com/how-does-a-face-detection-program-work-using-neural-networks-17896df8e6ff
+   1. HOG+SVM - Classifier 
+ 
    
