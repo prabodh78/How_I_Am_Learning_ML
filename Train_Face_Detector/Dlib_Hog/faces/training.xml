@@ -1,0 +1,46 @@
+<?xml version='1.0' encoding='ISO-8859-1'?>
+<?xml-stylesheet type='text/xsl' href='image_metadata_stylesheet.xsl'?>
+<dataset>
+<name>imglab dataset</name>
+<comment>Created by imglab tool.</comment>
+<images>
+  <image file='train/0.png'>
+  </image>
+  <image file='train/14.png'>
+  </image>
+  <image file='train/16.png'>
+  </image>
+  <image file='train/18.png'>
+  </image>
+  <image file='train/2.png'>
+  </image>
+  <image file='train/20.png'>
+  </image>
+  <image file='train/2007_007763.jpg'>
+  </image>
+  <image file='train/2008_001009.jpg'>
+  </image>
+  <image file='train/2008_001322.jpg'>
+  </image>
+  <image file='train/2008_002079.jpg'>
+  </image>
+  <image file='train/26.png'>
+  </image>
+  <image file='train/34.png'>
+  </image>
+  <image file='train/35.png'>
+  </image>
+  <image file='train/36.png'>
+  </image>
+  <image file='train/38.png'>
+  </image>
+  <image file='train/40.png'>
+  </image>
+  <image file='train/43.png'>
+  </image>
+  <image file='train/45.png'>
+  </image>
+  <image file='train/50.png'>
+  </image>
+</images>
+</dataset>
