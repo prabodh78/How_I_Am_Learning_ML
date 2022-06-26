@@ -11,7 +11,7 @@ As you know these are basic steps of model training.
   Step 4: Test Model
 </sub>
 
-##### Please refer folder -> "Train_Classifier", here we have trained and evaluate classifier with different models.
+##### Please refer folder -> "Train_Classifier", here i have trained and evaluate classifier with different models.
 
 Learnings: 
 1. I have trained digit dataset with different classifier like ->
