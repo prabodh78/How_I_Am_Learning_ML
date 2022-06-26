@@ -32,5 +32,10 @@ In case of object detection, theory says that NN outperforms all other ML archit
 Learnings: 
 1. I have trained ->
    1. HOG+SVM - Classifier 
+   2. HOG+SVM - Detector(Dlib)
+2. Explored ->
+   1. ImgLab - It's an annotation tool which used while labeling dataset for dlib based detector.
+   2. MTCNN - (https://github.com/ipazc/mtcnn)
+   3. Viola-Jones(Haar-cascade Detection in OpenCV)
  
    
