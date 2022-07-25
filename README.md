@@ -37,5 +37,7 @@ Learnings:
    1. ImgLab - It's an annotation tool which used while labeling dataset for dlib based detector.
    2. MTCNN - (https://github.com/ipazc/mtcnn)
    3. Viola-Jones(Haar-cascade Detection in OpenCV)
- 
    
+## 3. Problem Statement: Train a Face Pose Classifier.
+ <img alt="Coding" src="Train_Classifier/Face_pose_classifier/pose_1.jpg">
+    <img alt="Coding" src="Train_Classifier/Face_pose_classifier/pose_2.jpg">
