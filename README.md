@@ -39,5 +39,4 @@ Learnings:
    3. Viola-Jones(Haar-cascade Detection in OpenCV)
    
 ## 3. Problem Statement: Train a Face Pose Classifier.
- <img alt="Coding" src="Train_Classifier/Face_pose_classifier/pose_1.jpg">
-    <img alt="Coding" src="Train_Classifier/Face_pose_classifier/pose_2.jpg">
+ <img height=500 alt="Coding" src="Train_Classifier/Face_pose_classifier/pose_1.jpg"> <img height=500 alt="Coding" src="Train_Classifier/Face_pose_classifier/pose_2.jpg">
