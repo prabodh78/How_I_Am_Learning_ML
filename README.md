@@ -40,5 +40,4 @@ Learnings:
    
 ## 3. Problem Statement: Train a Face Pose Classifier.
 ##### Please refer folder -> "Train_Classifier/Face_pose_classifier", here I have trained and evaluate classifier with different models.
- <img height=500 alt="Coding" src="Train_Classifier/Face_pose_classifier/my_face_1.JPG"> 
-<img height=500 alt="Coding" src="Train_Classifier/Face_pose_classifier/face_2.JPG">
+ <img height=500 alt="Coding" src="Train_Classifier/Face_pose_classifier/my_face_1.JPG"> <img height=500 alt="Coding" src="Train_Classifier/Face_pose_classifier/face_2.JPG">
