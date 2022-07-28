@@ -11,7 +11,7 @@ As you know these are basic steps of model training.
   Step 4: Test Model
 </sub>
 
-##### Please refer folder -> "Train_Classifier", here i have trained and evaluate classifier with different models.
+##### Please refer folder -> "Train_Classifier", here I have trained and evaluate classifier with different models.
 
 Learnings: 
 1. I have trained digit dataset with different classifier like ->
@@ -39,4 +39,6 @@ Learnings:
    3. Viola-Jones(Haar-cascade Detection in OpenCV)
    
 ## 3. Problem Statement: Train a Face Pose Classifier.
- <img height=500 alt="Coding" src="Train_Classifier/Face_pose_classifier/pose_1.jpg"> <img height=500 alt="Coding" src="Train_Classifier/Face_pose_classifier/pose_2.jpg">
+##### Please refer folder -> "Train_Classifier/Face_pose_classifier", here I have trained and evaluate classifier with different models.
+ <img height=500 alt="Coding" src="Train_Classifier/Face_pose_classifier/my_face_1.JPG"> 
+<img height=500 alt="Coding" src="Train_Classifier/Face_pose_classifier/face_2.JPG">

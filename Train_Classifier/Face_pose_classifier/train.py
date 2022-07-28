@@ -15,7 +15,7 @@ from sklearn.metrics import confusion_matrix
 import matplotlib.pyplot as plt
 from tensorflow.python.keras.optimizer_v2.adam import Adam
 from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Dense, Conv2D, Dropout, Flatten, MaxPooling2D
+from tensorflow.keras.layers import Dense, Conv2D, Dropout, Flatten, MaxPooling2D, Rescaling
 from sklearn.preprocessing import OneHotEncoder
 from sklearn.datasets import load_iris
 from sklearn.model_selection import train_test_split
@@ -91,7 +91,11 @@ def train_cnn(data_dir, debug=True, model_name='face_pose_classifier'):
     batch_size = 32
     img_height = 70
     img_width = 70
-    num_classes = 3
+    num_classes = len(os.listdir(data_dir))
+    # Hyper-parameters
+    epochs = 15
+
+    print('[Info] No. of classes: ', num_classes)
     train_ds = tf.keras.utils.image_dataset_from_directory(
         data_dir,
         validation_split=0.2,
@@ -132,19 +136,19 @@ def train_cnn(data_dir, debug=True, model_name='face_pose_classifier'):
     # Notice the pixel values are now in `[0,1]`.
     print(np.min(first_image), np.max(first_image))
 
-    model = tf.keras.Sequential([
-        tf.keras.layers.Rescaling(1. / 255),
-        tf.keras.layers.Conv2D(32, 3, activation='relu'),
-        tf.keras.layers.MaxPooling2D(),
-        tf.keras.layers.Conv2D(32, 3, activation='relu'),
-        tf.keras.layers.MaxPooling2D(),
-        tf.keras.layers.Conv2D(32, 3, activation='relu'),
-        tf.keras.layers.MaxPooling2D(),
-        tf.keras.layers.Flatten(),
-        tf.keras.layers.Dense(128, activation='relu'),
-        tf.keras.layers.Dense(num_classes)
+    model = Sequential([
+        Rescaling(1. / 255, input_shape=(img_height, img_width, 3)),
+        Conv2D(16, 3, padding='same', activation='relu'),
+        MaxPooling2D(),
+        Conv2D(32, 3, padding='same', activation='relu'),
+        MaxPooling2D(),
+        Conv2D(64, 3, padding='same', activation='relu'),
+        MaxPooling2D(),
+        Flatten(),
+        Dense(128, activation='relu'),
+        Dropout(0.2),
+        Dense(num_classes, activation='softmax')
     ])
-
     model.compile(
         optimizer='adam',
         loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True),
@@ -152,7 +156,7 @@ def train_cnn(data_dir, debug=True, model_name='face_pose_classifier'):
     model.fit(
         train_ds,
         validation_data=val_ds,
-        epochs=10
+        epochs=epochs
     )
     model.save(model_name)
 
@@ -217,34 +221,37 @@ def predict(model, image_numpy):
     if face_img is not None:
         # cv2.imshow('img', face_img)
         # cv2.waitKey(0)
-        print(np.array([face_img]).shape)
-        return np.argmax(model.predict(np.array([face_img])))
+        # print(np.array([face_img]).shape)
+        pred = model.predict(np.array([face_img]))
+        print(pred)
+        return np.argmax(pred)
     return -1
 
 
-dataset = '/home/prabodh/workspace/frontal_non_frontal'
-model_name = 'face_pose_cnn_v2'
+dataset = '/home/prabodh/workspace/Face_Pose_Training/Prabodh/pose_data'
+model_name = 'face_pose_v3_epochs_15_dropout'
 # train_deep_neural_network(dataset)
-# train_cnn(dataset, model_name=model_name)
+train_cnn(dataset, model_name=model_name)
+
 model = tf.keras.models.load_model(model_name)
-classes = {0:'frontal', 1: 'left', 2: 'right'}
+classes = {0: 'frontal', 1: 'left', 2: 'right'}
 img_path = '/home/prabodh/personal_space/How_I_Am_Learning_ML/Dataset/personal_images/my_face_1.JPG'
 img_path2 = '/home/prabodh/personal_space/How_I_Am_Learning_ML/Dataset/personal_images/face_2.JPG'
-img = cv2.imread(img_path)
-ped = predict(model, image_numpy=cv2.imread(img_path))
-print(ped)
-img = cv2.putText(img, str(classes[ped]), (50, 50), cv2.FONT_HERSHEY_SIMPLEX,
-                                           1, (255, 245, 0), 3, cv2.LINE_AA)
-cv2.imwrite('pose_1.jpg', img)
+img_path3 = '/home/prabodh/workspace/Face_Pose_Training/Shubham/face_pose_train_dataset/test/left/ND_labelled_v.vinothkumar@mphasis.com_mphasis_proctordesk_hosted_1415_.jpg'
 
-ped = predict(model, image_numpy=cv2.imread(img_path2))
-print(ped)
-img2 = cv2.imread(img_path2)
-img2 = cv2.putText(img2, str(classes[ped]), (50, 100), cv2.FONT_HERSHEY_SIMPLEX,
-                                           3, (255, 0, 0), 5, cv2.LINE_AA)
-# img2 = cv2.resize(img2, (img.shape[0], img.shape[1]), interpolation=cv2.INTER_NEAREST)
-cv2.imwrite('pose_2.jpg', img2)
 
-# print(img2.shape)
-# img_com = np.hstack([img, img2])
-# cv2.imwrite('sample_pose.jpg', img_com)
+def get_prediction(img_path):
+    img = cv2.imread(img_path)
+    ped = predict(model, image_numpy=img)
+    # print(ped)
+    img = cv2.putText(img, str(classes[ped]), (50, 50), cv2.FONT_HERSHEY_SIMPLEX,
+                                               1, (255, 245, 0), 3, cv2.LINE_AA)
+    cv2.imwrite(os.path.basename(img_path), img)
+    return ped
+
+[get_prediction(i) for i in [img_path, img_path2, img_path3]]
+
+# How to increse accuracy
+# 1. Hyperparameter tunning
+# 2. Cross validation
+# 3. Ensemble techniques
